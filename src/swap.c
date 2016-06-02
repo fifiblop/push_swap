@@ -6,7 +6,7 @@
 /*   By: pdelefos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/31 15:51:10 by pdelefos          #+#    #+#             */
-/*   Updated: 2016/05/31 20:15:57 by pdelefos         ###   ########.fr       */
+/*   Updated: 2016/06/02 14:35:11 by pdelefos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,9 @@ void	swap(t_dlist *list)
 
 	node_tmp = list->first;
 	node_tmp->prev = list->first->next;
+	if (node_tmp->prev == list->last)
+		list->last = node_tmp;
 	node_tmp->next = node_tmp->prev->next;
-	node_tmp->next->prev = node_tmp;
 	list->first = node_tmp->prev;
 	list->first->next = node_tmp;
 	list->first->prev = NULL;
@@ -39,7 +40,7 @@ void	sa(t_dlist *list_a)
 	if (checkerror_swap(list_a))
 	{
 		swap(list_a);
-		ft_putstr("sa");
+		ft_putstr("\033[32msa\033[0m");
 	}
 }
 
@@ -48,7 +49,7 @@ void	sb(t_dlist *list_b)
 	if (checkerror_swap(list_b))
 	{
 		swap(list_b);
-		ft_putstr("sb");
+		ft_putstr("\033[32msb\033[0m");
 	}
 }
 
@@ -56,8 +57,8 @@ void	ss(t_dlist *list_a, t_dlist *list_b)
 {
 	if (checkerror_swap(list_a) && checkerror_swap(list_b))
 	{
-		sa(list_a);
-		sb(list_b);
-		ft_putstr("ss");
+		swap(list_a);
+		swap(list_b);
+		ft_putstr("\033[32mss\033[0m");
 	}
 }

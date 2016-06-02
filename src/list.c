@@ -6,7 +6,7 @@
 /*   By: pdelefos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/30 11:28:26 by pdelefos          #+#    #+#             */
-/*   Updated: 2016/05/31 20:17:38 by pdelefos         ###   ########.fr       */
+/*   Updated: 2016/06/02 15:12:38 by pdelefos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,6 @@ void	init_dlist(t_dlist *list)
 	list->count = 0;
 	list->first = NULL;
 	list->last = NULL;
-}
-
-void	check_double(t_dlist *list, int value)
-{
-	t_listnode *lst;
-
-	lst = list->first;
-	while (lst)
-	{
-		if (lst->value == value)
-			exit_prog("Error");
-		lst = lst->next;
-	}
 }
 
 void	list_push(t_dlist *list, int value)
@@ -56,6 +43,27 @@ void	list_push(t_dlist *list, int value)
 		list->last = node;
 	}
 	list->count++;
+}
+
+void	list_pushnode(t_dlist *list, t_listnode *node)
+{
+	if (node != NULL)
+	{
+		node->prev = NULL;
+		if (list->last == NULL)
+		{
+			node->next = NULL;
+			list->first = node;
+			list->last = node;
+		}
+		else
+		{
+			node->next = list->first;
+			list->first->prev = node;
+			list->first = node;
+		}
+		list->count++;
+	}
 }
 
 void	print_list(t_dlist *list)

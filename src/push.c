@@ -6,7 +6,7 @@
 /*   By: pdelefos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/31 16:21:13 by pdelefos          #+#    #+#             */
-/*   Updated: 2016/05/31 19:56:10 by pdelefos         ###   ########.fr       */
+/*   Updated: 2016/06/02 21:17:43 by pdelefos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,22 +26,18 @@ void	push(t_dlist *list_a, t_dlist *list_b)
 	t_listnode *node_tmp;
 
 	node_tmp = list_a->first;
-	list_a->first = node_tmp->next;
-	list_a->first->prev = NULL;
-	if (list_b->last == NULL)
+	if (list_a->count == 1)
 	{
-		node_tmp->prev = NULL;
-		node_tmp->next = NULL;
-		list_b->first = node_tmp;
-		list_b->last = node_tmp;
+		list_a->first = NULL;
+		list_a->last = NULL;
 	}
 	else
 	{
-		list_b->first->prev = node_tmp;
-		node_tmp->next = list_b->first;
-		node_tmp->prev = NULL;
-		list_b->first = node_tmp;
+		list_a->first = node_tmp->next;
+		list_a->first->prev = NULL;
 	}
+	list_a->count--;
+	list_pushnode(list_b, node_tmp);
 }
 
 void	pa(t_dlist *list_b, t_dlist *list_a)
@@ -49,7 +45,7 @@ void	pa(t_dlist *list_b, t_dlist *list_a)
 	if (checkerror_push(list_b))
 	{
 		push(list_b, list_a);
-		ft_putstr("pa");
+		ft_putstr("\033[33mpa\033[0m");
 	}
 }
 
@@ -58,6 +54,6 @@ void	pb(t_dlist *list_a, t_dlist *list_b)
 	if (checkerror_push(list_a))
 	{
 		push(list_a, list_b);
-		ft_putstr("pb");
+		ft_putstr("\033[33mpb\033[0m");
 	}
 }
