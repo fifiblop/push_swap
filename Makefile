@@ -13,10 +13,14 @@ NAME = push_swap
 
 SRC_PATH = src
 SRC_NAME = main.c \
+		   parse.c \
 		   list.c \
 		   ft_atoi_ll.c \
 		   swap.c \
 		   push.c \
+		   rotate.c \
+		   rev_rotate.c \
+		   push_swap.c
 
 OBJ_PATH = obj
 OBJ_NAME = $(SRC_NAME:.c=.o)
