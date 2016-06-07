@@ -6,7 +6,7 @@
 /*   By: pdelefos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/30 10:18:23 by pdelefos          #+#    #+#             */
-/*   Updated: 2016/06/02 20:27:23 by pdelefos         ###   ########.fr       */
+/*   Updated: 2016/06/03 19:01:12 by pdelefos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,35 @@ typedef struct			s_dlist
 
 typedef struct			s_min
 {
-	int					value;
+	int					val;
 	long long			pos;
 }						t_min;
 
+typedef struct			s_flag
+{
+	t_bool				verbose;
+	t_bool				color;
+	t_bool				count_op;
+	t_bool				mute;
+	t_bool				log;
+	long long			nb_sa;
+	long long			nb_sb;
+	long long			nb_ss;
+	long long			nb_pa;
+	long long			nb_pb;
+	long long			nb_ra;
+	long long			nb_rb;
+	long long			nb_rr;
+	long long			nb_rra;
+	long long			nb_rrb;
+	long long			nb_rrr;
+}						t_flag;
+
 void					exit_prog(char *msg);
 long long				ft_atoi_ll(const char *str);
+void					put_space(t_flag *flag);
 
-void					parse(t_dlist *list, t_bool *verb, int ac, char **av);
+void					parse(t_dlist *list, t_flag *flag, int ac, char **av);
 void					check_double(t_dlist *list, int value);
 
 void					init_dlist(t_dlist *list);
@@ -49,20 +70,21 @@ void					print_piles(t_dlist *list_a, t_dlist *list_b);
 void					free_list(t_dlist *list);
 
 void					push_swap(t_dlist *list_a, t_dlist *list_b,
-						t_bool verb);
+						t_flag *flag);
 
-void					sa(t_dlist *list_a);
-void					sb(t_dlist *list_b);
-void					ss(t_dlist *list_a, t_dlist *list_b);
+int						sa(t_dlist *list_a, t_dlist *list_b, t_flag *flag);
+int						sb(t_dlist *list_b, t_dlist *list_a, t_flag *flag);
+int						ss(t_dlist *list_a, t_dlist *list_b, t_flag *flag);
 
-void					pa(t_dlist *list_b, t_dlist *list_a);
-void					pb(t_dlist *list_a, t_dlist *list_b);
+int						pa(t_dlist *list_b, t_dlist *list_a, t_flag *flag);
+int						pb(t_dlist *list_a, t_dlist *list_b, t_flag *flag);
 
-void					ra(t_dlist *list_a);
-void					rb(t_dlist *list_b);
-void					rr(t_dlist *list_a, t_dlist *list_b);
+int						ra(t_dlist *list_a, t_dlist *list_b, t_flag *flag);
+int						rb(t_dlist *list_b, t_dlist *list_a, t_flag *flag);
+int						rr(t_dlist *list_a, t_dlist *list_b, t_flag *flag);
 
-void					rra(t_dlist *list_a);
-void					rrb(t_dlist *list_b);
-void					rrr(t_dlist *list_a, t_dlist *list_b);
+int						rra(t_dlist *list_a, t_dlist *list_b, t_flag *flag);
+int						rrb(t_dlist *list_b, t_dlist *list_a, t_flag *flag);
+int						rrr(t_dlist *list_a, t_dlist *list_b, t_flag *flag);
+
 #endif

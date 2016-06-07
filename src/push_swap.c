@@ -6,7 +6,7 @@
 /*   By: pdelefos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/01 12:39:03 by pdelefos          #+#    #+#             */
-/*   Updated: 2016/06/02 21:18:08 by pdelefos         ###   ########.fr       */
+/*   Updated: 2016/06/03 19:04:28 by pdelefos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,14 @@ t_min	get_min(t_dlist *list_a)
 	long long	i;
 
 	node = list_a->first;
-	min.value = node->value;
+	min.val = node->value;
 	min.pos = 0;
 	i = 0;
 	while (node)
 	{
-		if (node->value < min.value)
+		if (node->value < min.val)
 		{
-			min.value = node->value;
+			min.val = node->value;
 			min.pos = i;
 		}
 		i++;
@@ -53,41 +53,71 @@ t_min	get_min(t_dlist *list_a)
 	return (min);
 }
 
-void	push_swap(t_dlist *list_a, t_dlist *list_b, t_bool verb)
+void	sort(t_dlist *list_a, t_dlist *list_b, t_flag *flag)
 {
 	t_min		min;
 	long long	med;
-	long long	opr;
 
-	(void)verb;
-	opr = 0;
+	med = list_a->count / 2;
+	while (list_a->first != NULL)
+	{
+		min = get_min(list_a);
+		while (list_a->first->value != min.val)
+		{
+			if (min.pos > med)
+				flag->nb_rra += rra(list_a, list_b, flag);
+			else
+				flag->nb_ra += ra(list_a, list_b, flag);
+			put_space(flag);
+		}
+		flag->nb_pb += pb(list_a, list_b, flag);
+		put_space(flag);
+	}
+	while (list_b->first->next != NULL)
+	{
+		flag->nb_pa += pa(list_b, list_a, flag);
+		put_space(flag);
+	}
+	flag->nb_pa += pa(list_b, list_a, flag);
+}
+
+void	do_exception(t_dlist *list_a, t_dlist *list_b, t_flag *flag)
+{
+	if (list_a->last->value < list_a->last->prev->value && list_a->count > 5)
+	{
+		rra(list_a, list_b, flag);
+		put_space(flag);
+		rra(list_a, list_b, flag);
+		put_space(flag);
+		sa(list_a, list_b, flag);
+		put_space(flag);
+		ra(list_a, list_b, flag);
+		put_space(flag);
+		ra(list_a, list_b, flag);
+		if (!is_sort(list_a))
+			put_space(flag);
+	}
+}
+
+void	push_swap(t_dlist *list_a, t_dlist *list_b, t_flag *flag)
+{
 	if (list_a->count > 1 && !is_sort(list_a))
 	{
-		med = list_a->count / 2;
-		while (list_a->first != NULL)
+		do_exception(list_a, list_b, flag);
+		if (!is_sort(list_a) && list_a->first->value > list_a->last->value)
 		{
-			min = get_min(list_a);
-			while (list_a->first->value != min.value)
-			{
-				if (min.pos > med)
-				{
-					rra(list_a);
-					opr++;
-				}
-				else
-				{
-					ra(list_a);
-					opr++;
-				}
-			}
-			pb(list_a, list_b);
-			opr++;
+			flag->nb_ra += ra(list_a, list_b, flag);
+			if (!is_sort(list_a))
+				put_space(flag);
 		}
-		while (list_b->first != NULL)
+		if (list_a->first->value > list_a->first->next->value)
 		{
-			pa(list_b, list_a);
-			opr++;
+			flag->nb_sa += sa(list_a, list_b, flag);
+			if (!is_sort(list_a))
+				put_space(flag);
 		}
+		if (is_sort(list_a))
+			return ;
+		sort(list_a, list_b, flag);
 	}
-	ft_printf("\nop : %lld\n", opr);
 }

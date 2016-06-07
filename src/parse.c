@@ -6,7 +6,7 @@
 /*   By: pdelefos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/02 14:08:47 by pdelefos          #+#    #+#             */
-/*   Updated: 2016/06/02 19:25:23 by pdelefos         ###   ########.fr       */
+/*   Updated: 2016/06/03 16:03:30 by pdelefos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,6 @@
 
 #define MIN_INT -2147483648
 #define MAX_INT 2147483647
-
-void	exit_prog(char *msg)
-{
-	ft_putendl_fd(msg, 2);
-	exit(1);
-}
 
 void	check_errors(char *value)
 {
@@ -48,17 +42,45 @@ void	check_double(t_dlist *list, int value)
 	}
 }
 
-void	parse(t_dlist *list, t_bool *verb, int ac, char **av)
+int		set_flag(t_flag *flag, char *str)
+{
+	if (ft_strcmp(str, "-v") == 0)
+		flag->verbose = TRUE;
+	else if (ft_strcmp(str, "-c") == 0)
+		flag->color = TRUE;
+	else if (ft_strcmp(str, "-o") == 0)
+		flag->count_op = TRUE;
+	else if (ft_strcmp(str, "-m") == 0)
+		flag->mute = TRUE;
+	else if (ft_strcmp(str, "-l") == 0)
+		flag->log = TRUE;
+	if (!ft_strcmp(str, "-v") || !ft_strcmp(str, "-c") || !ft_strcmp(str, "-o")
+		|| !ft_strcmp(str, "-m") || !ft_strcmp(str, "-l"))
+		return (1);
+	return (0);
+}
+
+int		check_flags(t_flag *flag, int ac, char **av)
+{
+	int		i;
+	int		j;
+
+	i = 1;
+	j = 1;
+	while (i <= 5 && i < (ac - 1))
+	{
+		j += set_flag(flag, av[i]);
+		i++;
+	}
+	return (j);
+}
+
+void	parse(t_dlist *list, t_flag *flag, int ac, char **av)
 {
 	long long	i;
 	long long	value;
 
-	i = 1;
-	if (ft_strcmp(av[i], "-v") == 0)
-	{
-		*verb = TRUE;
-		i++;
-	}
+	i = check_flags(flag, ac, av);
 	while (i < ac)
 	{
 		check_errors(av[i]);

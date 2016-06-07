@@ -6,13 +6,19 @@
 /*   By: pdelefos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/31 16:21:13 by pdelefos          #+#    #+#             */
-/*   Updated: 2016/06/02 21:17:43 by pdelefos         ###   ########.fr       */
+/*   Updated: 2016/06/03 19:00:40 by pdelefos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "push_swap.h"
 #include <stdlib.h>
+
+void	put_space(t_flag *flag)
+{
+	if (!flag->mute && !flag->verbose)
+		write(1, " ", 1);
+}
 
 int		checkerror_push(t_dlist *list)
 {
@@ -40,20 +46,34 @@ void	push(t_dlist *list_a, t_dlist *list_b)
 	list_pushnode(list_b, node_tmp);
 }
 
-void	pa(t_dlist *list_b, t_dlist *list_a)
+int		pa(t_dlist *list_b, t_dlist *list_a, t_flag *flag)
 {
 	if (checkerror_push(list_b))
 	{
 		push(list_b, list_a);
-		ft_putstr("\033[33mpa\033[0m");
+		if (!flag->mute && flag->color)
+			ft_putstr("\033[33mpa\033[0m");
+		else if (!flag->mute)
+			ft_putstr("pa");
+		if (!flag->mute && flag->verbose)
+			print_piles(list_a, list_b);
+		return (1);
 	}
+	return (0);
 }
 
-void	pb(t_dlist *list_a, t_dlist *list_b)
+int		pb(t_dlist *list_a, t_dlist *list_b, t_flag *flag)
 {
 	if (checkerror_push(list_a))
 	{
 		push(list_a, list_b);
-		ft_putstr("\033[33mpb\033[0m");
+		if (!flag->mute && flag->color)
+			ft_putstr("\033[33mpb\033[0m");
+		else if (!flag->mute)
+			ft_putstr("pb");
+		if (!flag->mute && flag->verbose)
+			print_piles(list_a, list_b);
+		return (1);
 	}
+	return (0);
 }

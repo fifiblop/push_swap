@@ -6,7 +6,7 @@
 /*   By: pdelefos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/31 16:31:39 by pdelefos          #+#    #+#             */
-/*   Updated: 2016/06/02 19:02:41 by pdelefos         ###   ########.fr       */
+/*   Updated: 2016/06/03 16:29:06 by pdelefos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,30 +37,53 @@ void	rotate(t_dlist *list)
 	}
 }
 
-void	ra(t_dlist *list_a)
+int		ra(t_dlist *list_a, t_dlist *list_b, t_flag *flag)
 {
 	if (checkerror_rotate(list_a))
 	{
 		rotate(list_a);
-		ft_putstr("\033[34mra\033[0m");
+		if (!flag->mute && flag->color)
+			ft_putstr("\033[34mra\033[0m");
+		else if (!flag->mute)
+			ft_putstr("ra");
+		if (!flag->mute && flag->verbose)
+			print_piles(list_a, list_b);
+		return (1);
 	}
+	return (0);
 }
 
-void	rb(t_dlist *list_b)
+int		rb(t_dlist *list_b, t_dlist *list_a, t_flag *flag)
 {
 	if (checkerror_rotate(list_b))
 	{
 		rotate(list_b);
-		ft_putstr("\033[34mrb\033[0m");
+		if (!flag->mute && flag->color)
+			ft_putstr("\033[34mrb\033[0m");
+		else if (!flag->mute)
+			ft_putstr("rb");
+		if (!flag->mute && flag->verbose)
+			print_piles(list_a, list_b);
+		return (1);
 	}
+	return (0);
 }
 
-void	rr(t_dlist *list_a, t_dlist *list_b)
+int		rr(t_dlist *list_a, t_dlist *list_b, t_flag *flag)
 {
 	if (checkerror_rotate(list_a))
 		rotate(list_a);
 	if (checkerror_rotate(list_b))
 		rotate(list_b);
 	if (checkerror_rotate(list_a) || checkerror_rotate(list_b))
-		ft_putstr("\033[34mrr\033[0m");
+	{
+		if (!flag->mute && flag->color)
+			ft_putstr("\033[34mrr\033[0m");
+		else if (!flag->mute)
+			ft_putstr("rr");
+		if (!flag->mute && flag->verbose)
+			print_piles(list_a, list_b);
+		return (1);
+	}
+	return (0);
 }
